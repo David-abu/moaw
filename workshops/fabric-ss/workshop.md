@@ -58,6 +58,11 @@ To complete this workshop you will need the following:
 2. A [Microsoft 365 account for Power BI Service](https://learn.microsoft.com/power-bi/enterprise/service-admin-signing-up-for-power-bi-with-a-new-office-365-trial?WT.mc_id=data-91115-davidabu)
 3. A [Microsoft Fabric License](https://learn.microsoft.com/en-us/fabric/enterprise/licenses?WT.mc_id=data-91115-jndemenge) or [Start the Fabric (Preview) trial](https://learn.microsoft.com/en-us/fabric/get-started/fabric-trial?WT.mc_id=data-91115-jndemenge#start-the-fabric-preview-trial)
 4. A [Workspace in Microsoft Fabric](https://learn.microsoft.com/fabric/data-warehouse/tutorial-create-workspace?WT.mc_id=data-91115-davidabu)
+5. Make sure your Workspace has the Data Model settings activated 
+    a. Click **Workspace settings**
+    b. Click **Power BI**
+    c. Open **Power BI** and **Click General**
+    d. **Tick** the small box with "Users can edit data models in Power BI service
 
 ---
 
@@ -173,6 +178,8 @@ There are 3 views within the Warehouse
 - **Query** - This is where you build your SQL solutions
 - **Model** - This is where you connect your tables together
 
+To learn more on [Model in Power BI](https://learn.microsoft.com/en-us/training/paths/model-data-power-bi/)
+
 ### Create Views with SQL Query
 
 Based on our `train_annotations` data, we want to create a dimension for **season** column and we will use an SQL Query to do that:
@@ -202,11 +209,28 @@ We want to build relationships with the 4 tables we now have
 - `categories`
 - `Season`
 
-To create relationship
+To create relationship : Click the **Model** below the screen where you have Data, Query and Model. You will see all the tables listed above.
 
-1. Click **Categories[id]** and drag to connect to **train_annotations[category_id]**
-2. Click **Season[season]** and drag to connect to **train_annotation[category_id]**
+1. Click **Categories[id]** and drag to connect to **train_annotations[category_id]**.
+A screen will pop up with Create Relationship. 
+    a. Caridinality : One to Many
+    b. Cross filter direction : Single
+    c. Make this relationship active: Ticked
+    d. Click **Confirm**
+    
+2. Click **Season[season]** and drag to connect to **train_annotation[season]**
+A screen will pop up with Create Relationship. 
+    a. Caridinality : One to Many
+    b. Cross filter direction : Single
+    c. Make this relationship active: Ticked
+    d. Click **Confirm**
+
 3. Click **train_images[id]** and drag to connect to **train_annotation[images_id]**
+A screen will pop up with Create Relationship. 
+    a. Caridinality : One to Many
+    b. Cross filter direction : Single
+    c. Make this relationship active: Ticked
+    d. Click **Confirm**
 
 At the end, you should have a visual like this
 ![Model](assets/model.png)
@@ -234,7 +258,17 @@ Apply same steps above for a new measure called **Images**
 Images = COUNTROWS(train_images)
 ```
 
-Next is creating report, if there is a table you do not want to use at the reporting phase, do the following steps
+Apply same steps above for a new measure called **Average_Annotation**
+
+
+Next is creating report, if there is a table you do not want to use at the reporting phase, do the following steps.
+
+For this workshop, we will not be using these tables at the reporting phase
+
+1. test_annotations
+2. test_images
+
+To hide them, do the following below
 
 1. Click the **table**
 2. Click the **...**
@@ -248,6 +282,8 @@ Next is creating report, if there is a table you do not want to use at the repor
 
 This section covers the understanding of data analysis within Fabric . The Serengeti dataset is a collection of wildlife images captured by camera traps in the Serengeti National Park in Tanzania. The goal of this project is to analyze the trained data.
 
+To understand the Power BI interface, Click this [resource](https://learn.microsoft.com/en-us/power-bi/fundamentals/power-bi-service-overview)
+
 From our previous lesson in SQL endpoint, we have been able to create measures and build relationship, creating a report will be easier.
 
 Clik on New Report and you will see the Power BI interface.
@@ -260,7 +296,9 @@ This report below is what we will build for this workshop
 
 ### Building the Report
 
-In the filter pane,
+In the **filter pane**,
+
+![dashboard](assets/filter.png)
 
 - drag **Categories[id]** to the **Filters on all pages**
 - in Filter type, change **Advanced filtering** to **Basic filtering**
@@ -270,40 +308,76 @@ In the filter pane,
 To bring in Visuals
 
 1. For the first card visual
-    - Click a **card** visual, click the measure called **annotation** in the **train_annotation** table
-    - you can Format your visual in the **format icon** in the Visualization pane
+
+![dashboard](assets/card.png)
+
+   - Click a **card** visual , 
+   - Click the measure called **annotation** in the **train_annotation** table
+   - Click the **format icon** in the Visualization pane
+
+![dashboard](assets/Format_visual.png)
+    
+ - Click **Visual**
+ - Click the Callout Value and increase the font size to 55
+ - Click the Category label to increase the font size to 18
+ - Click **Effects** and Click **General**
+ - Click and Open the Background
+ - On Visual border and increase Rounded corners to 15
+ - On Shadow 
+
 
 2. For the second card visual
-    - Click a **card** visual, click the measure called **images** in the **train_images** table
-    - you can Format your visual in the **format icon** in the Visualization pane
+
+- Click a **card** visual, click the measure called **images** in the **train_images** table
+- You can Format the visual in the **format icon** in the Visualization pane
+
+
 
 3. For Slicers
-    - Click a **slicer** visual, Click **season[season]**
-    - Click another **slicer** visual, Click **Category[name]**
-    - you can Format your visual in the **format icon** in the Visualization pane
+
+![dashboard](assets/slicer.png)
+
+- Click a **slicer** visual, Click **season[season]**
+
+- Click another **slicer** visual, Click **Category[name]**
+- In the Field below Visualization, Right click **name**
+- Click **Rename for thsi visual**
+- Change **name** to **Animals**
+
+
+- You can Format the visuals in the **format icon** in the Visualization pane
 
 4. Annotation by Season
-    - Click **Clustered bar chart**
-    - Click **season[season]** and **train_annotation[annotations]**
-    - you can Format your visual in the **format icon** in the Visualization pane
+
+![dashboard](assets/clustered_barchart.png)
+
+- Click **Clustered bar chart**
+- Click **season[season]** and **train_annotation[annotations]**
+- You can Format the visual in the **format icon** in the Visualization pane
 
 5. Top Number of Annotations by Animals
-    - Click **Clustered bar chart**
-    - Click **Category[name]** and **train_annotation[annotations]**
-    - In the Format Pane, Check the **name**, change **Advanced filtering** to **TopN**
-    - Show items , **Top N** and write **5** beside
-    - By Value, drag **train_annotation[annotations]** into the blank space
-    - you can Format your visual in the **format icon** in the Visualization pane
+
+- Click **Clustered bar chart**
+- Click **Category[name]** and **train_annotation[annotations]**
+- In the Format Pane, Check the **name**, change **Advanced filtering** to **TopN**
+- Show items , **Top N** and write **5** beside
+- By Value, drag **train_annotation[annotations]** into the blank space
+- you can Format your visual in the **format icon** in the Visualization pane
+
 
 6. Bottom Number of Annotations by Animals
-    - Click **Clustered bar chart**
-    - Click **Category[name]** and **train_annotation[annotations]**
-    - In the Format Pane, Check the **name**, change **Advanced filtering** to **TopN**
-    - Show items , Change **Top** to **Bottom** and **5** beside
-    - By Value, drag **train_annotation[annotations]** into the blank space
-    - you can Format your visual in the **format icon** in the Visualization pane
+- Click **Clustered bar chart**
+- Click **Category[name]** and **train_annotation[annotations]**
+- In the Format Pane, Check the **name**, change **Advanced filtering** to **TopN**
+- Show items , Change **Top** to **Bottom** and **5** beside
+- By Value, drag **train_annotation[annotations]** into the blank space
+- you can Format your visual in the **format icon** in the Visualization pane
 
-You can explore the data more.
+![dashboard](assets/dashboard.png)
+
+Great work in getting to this point. 
+
+I hope you enjoyed this session, You can explore and build more visualizations with the data based on what you have learnt in this session..
 
 ---
 
